@@ -27,4 +27,4 @@ venv/bin/activate: requirements.txt
 	touch $@
 
 cleanup:
-	rm -f output*
+	rm -f output/*
