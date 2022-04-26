@@ -1,37 +1,61 @@
 SHELL := /bin/bash
 
 GENERATED_FILES: \
-		output/violent-crime-neighborhood-ytd.xlsx \
-		output/violent-crime-neighborhood-full-year.xlsx
+		output/violent-crime-ytd.xlsx \
+		output/violent-crime-full-year.xlsx \
+		output/index-crime-ytd.xlsx \
+		output/index-crime-full-year.xlsx
 
 .PHONY: all raw
 
-# .INTERMEDIATE: \
-# 	output/index-crime-latest.csv \
-# 	output/violent-crime-latest.csv
+.INTERMEDIATE: \
+	output/violent-crime-ytd.csv \
+	output/violent-crime-full-year.csv \
+	output/index-crime-ytd.csv \
+	output/index-crime-full-year.csv
 
 all: $(GENERATED_FILES)
 
 raw: \
 	output/violent-crime-ytd.csv \
-	output/violent-crime-latest.csv \
+	output/violent-crime-full-year.csv \
 	output/index-crime-ytd.csv \
-	output/index-crime-latest.csv
+	output/index-crime-full-year.csv
+
+output/violent-crime-ytd.xlsx: \
+		src/generate_excel_report.py \
+		output/violent-crime-ytd.csv
+	python $^ $@
+
+output/violent-crime-full-year.xlsx: \
+		src/generate_excel_report.py \
+		output/violent-crime-full-year.csv
+	python $^ $@
+
+output/index-crime-ytd.xlsx: \
+		src/generate_excel_report.py \
+		output/index-crime-ytd.csv
+	python $^ $@
+
+output/index-crime-full-year.xlsx: \
+		src/generate_excel_report.py \
+		output/index-crime-full-year.csv
+	python $^ $@
 
 output/violent-crime-ytd.csv: \
 		src/filter_ytd.py \
-		output/violent-crime-latest.csv
+		output/violent-crime-full-year.csv
 	python $^ > $@
 
-output/violent-crime-latest.csv: output/index-crime-latest.csv
+output/violent-crime-full-year.csv: output/index-crime-full-year.csv
 	cat $< | csvgrep -c fbi_code -r "01A|02|03|04A|04B" > $@
 
 output/index-crime-ytd.csv: \
 		src/filter_ytd.py \
-		output/index-crime-latest.csv
+		output/index-crime-full-year.csv
 	python $^ > $@
 
-output/index-crime-latest.csv: \
+output/index-crime-full-year.csv: \
 		hand/query.sql \
 		src/assign_crime_categories.py \
 		src/get_unique_homicide_case_numbers.py \
