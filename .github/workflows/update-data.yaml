@@ -65,3 +65,4 @@ jobs:
           title: Data through ${{ env.MAX_DATE }}
           files: |
             output/*.xlsx
+            README.md
