@@ -32,13 +32,16 @@ def get_col_widths(dataframe):
     ]
 
 
-if __name__ == "__main__":
-    df = pd.read_csv(
-        sys.argv[1],
-        dtype={"year": int},
-        low_memory=False,
-    )
+def crosstab(dataframe, index_col):
+    """run pandas.crosstab with a given dataframe and index column, ensuring consistent data selection
 
+    Args:
+        dataframe (pandas.DataFrame): dataframe to base crosstab on
+        index_col (str): name of index column
+
+    Returns:
+        pandas.DataFrame: pd.crosstab output
+    """
     crosstab_args = lambda df: {
         "columns": df.year,
         "values": df.case_number,
@@ -46,21 +49,31 @@ if __name__ == "__main__":
         "margins": True,
         "margins_name": "Total",
     }
+    return pd.crosstab(index=dataframe[index_col], **crosstab_args(dataframe)).iloc[
+        :, :-1  # drop the total column, I only want total row
+    ]
+
+
+if __name__ == "__main__":
+    df = pd.read_csv(
+        sys.argv[1],
+        dtype={"year": int},
+        low_memory=False,
+    )
+
     NBD_SHEET = "By Neighborhood"
 
     # get citywide crosstabs
     dfs = {
-        "Citywide Totals": pd.crosstab(index=df.crime_category, **crosstab_args(df)),
-        NBD_SHEET: pd.crosstab(index=df.pri_neigh, **crosstab_args(df)),
+        "Citywide Totals": crosstab(df, "crime_category"),
+        NBD_SHEET: crosstab(df, "pri_neigh"),
     }
 
     # get a crosstab by type for each neighborhood
     for neighborhood_name in df.pri_neigh.unique():
         if neighborhood_name != "NO NEIGHBORHOOD DATA":
             nbd_df = df[df.pri_neigh == neighborhood_name]
-            dfs[neighborhood_name] = pd.crosstab(
-                index=nbd_df.crime_category, **crosstab_args(nbd_df)
-            )
+            dfs[neighborhood_name] = crosstab(nbd_df, "crime_category")
 
     # write to Excel
     with pd.ExcelWriter(sys.argv[2], engine="xlsxwriter") as writer:
