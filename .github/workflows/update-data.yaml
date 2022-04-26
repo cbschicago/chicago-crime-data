@@ -64,4 +64,4 @@ jobs:
           prerelease: false
           title: Data through ${{ env.MAX_DATE }}
           files: |
-            output/*
+            output/*.xlsx
