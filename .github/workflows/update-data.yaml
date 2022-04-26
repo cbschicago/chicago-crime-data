@@ -5,58 +5,60 @@ on:
     # every 1 hour
     - cron: "0 * * * *"
   # this lets you run it manually
-  workflow-dispatch:
+  workflow_dispatch:
     inputs:
 
 jobs:
   run-workflow:
-    # setup steps
-    - name: checkout repo
-      uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      # setup steps
+      - name: checkout repo
+        uses: actions/checkout@v2
 
-    - name: set up python
-      uses: actions/setup-python@v2.0.0
-      with:
-        python-version: "3.8"
+      - name: set up python
+        uses: actions/setup-python@v2.0.0
+        with:
+          python-version: "3.8"
 
-    - name: install python dependencies
-      uses: py-actions/py-dependency-install@v2
-      with:
-        update-pip: false
-        update-setuptools: false
-        update-wheel: false
+      - name: install python dependencies
+        uses: py-actions/py-dependency-install@v2
+        with:
+          update-pip: false
+          update-setuptools: false
+          update-wheel: false
 
-    # run the whole workflow
-    - name: run make
-      run: make
+      # run the whole workflow
+      - name: run make
+        run: make
 
-    # get the max date for later use
-    - name: get max date environment variable
-      run: |
-        echo "MAX_DATE=$(cat output/max_date.txt)" >> $GITHUB_ENV
-        echo ""
+      # get the max date for later use
+      - name: get max date environment variable
+        run: |
+          echo "MAX_DATE=$(cat output/max_date.txt)" >> $GITHUB_ENV
+          echo ""
 
-    # commit the latest files and push
-    - name: commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add output
-        git commit -m "Add data for ${{ env.MAX_DATE }}"
+      # commit the latest files and push
+      - name: commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add output
+          git commit -m "Add data for ${{ env.MAX_DATE }}"
 
-    - name: push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+      - name: push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
-    # create a release with the latest files
-    - name: create release
-      uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: false
-        title: Data through ${{ env.MAX_DATE }}
-        files: |
-          output/*
+      # create a release with the latest files
+      - name: create release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: Data through ${{ env.MAX_DATE }}
+          files: |
+            output/*
