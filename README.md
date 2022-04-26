@@ -1,5 +1,7 @@
 # Chicago Crime Data
 
+[![update-data](https://github.com/cbschicago/chicago-crime-data/actions/workflows/update-data.yaml/badge.svg)](https://github.com/cbschicago/chicago-crime-data/actions/workflows/update-data.yaml)
+
 This repository fetches the latest data from the [Chicago Data Portal](https://data.cityofchicago.org/) on crimes in the city. It automatically queries and cleans the data, and generates Excel workbooks containing citywide totals and totals for each neighborhood.
 
 ## Which file should I use? 
