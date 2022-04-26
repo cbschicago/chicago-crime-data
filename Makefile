@@ -6,7 +6,7 @@ GENERATED_FILES: \
 		output/index-crime-ytd.xlsx \
 		output/index-crime-full-year.xlsx
 
-.PHONY: all raw
+.PHONY: all output/index-crime-full-year.csv
 
 .INTERMEDIATE: \
 	output/violent-crime-ytd.csv \
@@ -15,12 +15,6 @@ GENERATED_FILES: \
 	output/index-crime-full-year.csv
 
 all: $(GENERATED_FILES)
-
-raw: \
-	output/violent-crime-ytd.csv \
-	output/violent-crime-full-year.csv \
-	output/index-crime-ytd.csv \
-	output/index-crime-full-year.csv
 
 output/violent-crime-ytd.xlsx: \
 		src/generate_excel_report.py \
