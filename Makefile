@@ -6,12 +6,24 @@ GENERATED_FILES: \
 
 .PHONY: all output/index-crime-latest.csv
 
-.INTERMEDIATE: output/index-crime-latest.csv
+.INTERMEDIATE: \
+	output/index-crime-latest.csv \
+	output/violent-crime-latest.csv
 
 all: $(GENERATED_FILES)
 
+output/violent-crime-ytd.csv: \
+		src/filter_ytd.py \
+		output/violent-crime-latest.csv
+	python $^ > $@
+
 output/violent-crime-latest.csv: output/index-crime-latest.csv
 	cat $< | csvgrep -c fbi_code -r "01A|02|03|04A|04B" > $@
+
+output/index-crime-ytd.csv: \
+		src/filter_ytd.py \
+		output/index-crime-latest.csv
+	python $^ > $@
 
 output/index-crime-latest.csv: hand/query.sql
 	wget --no-check-certificate --quiet \
