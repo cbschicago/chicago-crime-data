@@ -4,6 +4,8 @@
 
 This repository fetches the latest data from the [Chicago Data Portal](https://data.cityofchicago.org/) on crimes in the city. It automatically queries and cleans the data, and generates Excel workbooks containing citywide totals and totals for each neighborhood.
 
+**[Click here to get the latest data](https://github.com/cbschicago/chicago-crime-data/releases/tag/latest)**
+
 ## Which file should I use? 
 
 There are two crime categories in this data: violent crime and "index crime." For stories about robberies, homicides, etc., use violent crime. For stories about crime more generally, including things like thefts and burglaries, use index crime.
@@ -28,7 +30,7 @@ The incident totals reflect the number of unique incidents that occurred in the 
 
 ## Generated Data Files
 
-Excel reports are written to [output/](output/), and automatically published in a [release]() whenever they're updated.
+Excel reports are written to [output/](output/), and automatically published in a [release](https://github.com/cbschicago/chicago-crime-data/releases/tag/latest) whenever they're updated.
 
 Below is a breakdown of each file created. 
 
