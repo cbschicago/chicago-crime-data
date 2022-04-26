@@ -4,13 +4,19 @@ GENERATED_FILES: \
 		output/violent-crime-neighborhood-ytd.xlsx \
 		output/violent-crime-neighborhood-full-year.xlsx
 
-.PHONY: all output/index-crime-latest.csv
+.PHONY: all raw
 
-.INTERMEDIATE: \
-	output/index-crime-latest.csv \
-	output/violent-crime-latest.csv
+# .INTERMEDIATE: \
+# 	output/index-crime-latest.csv \
+# 	output/violent-crime-latest.csv
 
 all: $(GENERATED_FILES)
+
+raw: \
+	output/violent-crime-ytd.csv \
+	output/violent-crime-latest.csv \
+	output/index-crime-ytd.csv \
+	output/index-crime-latest.csv
 
 output/violent-crime-ytd.csv: \
 		src/filter_ytd.py \
@@ -25,13 +31,16 @@ output/index-crime-ytd.csv: \
 		output/index-crime-latest.csv
 	python $^ > $@
 
-output/index-crime-latest.csv: hand/query.sql
+output/index-crime-latest.csv: \
+		hand/query.sql \
+		src/assign_crime_categories.py
 	wget --no-check-certificate --quiet \
-		--method GET \
-		--timeout=0 \
-		--header 'Host: data.cityofchicago.org' \
-		-O $@ \
-		'https://data.cityofchicago.org/resource/ijzp-q8t2.csv?$$query=$(shell cat $<)'
+			--method GET \
+			--timeout=0 \
+			--header 'Host: data.cityofchicago.org' \
+			-O /dev/stdout \
+			'https://data.cityofchicago.org/resource/ijzp-q8t2.csv?$$query=$(shell cat $<)' | \
+		python $(word 2, $^) > $@
 
 venv/bin/activate: requirements.txt
 	if [ ! -f $@ ]; then virtualenv venv; fi
