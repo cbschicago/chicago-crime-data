@@ -34,6 +34,7 @@ output/index-crime-ytd.csv: \
 output/index-crime-latest.csv: \
 		hand/query.sql \
 		src/assign_crime_categories.py \
+		src/get_unique_homicide_case_numbers.py \
 		src/get_neighborhood_names.py \
 		input/boundaries_neighborhoods.geojson
 	wget --no-check-certificate --quiet \
@@ -43,7 +44,8 @@ output/index-crime-latest.csv: \
 			-O /dev/stdout \
 			'https://data.cityofchicago.org/resource/ijzp-q8t2.csv?$$query=$(shell cat $<)' | \
 		python $(word 2, $^) | \
-		python $(wordlist 3, 4, $^) > $@
+		python $(word 3, $^) | \
+		python $(wordlist 4, 5, $^) > $@
 
 venv/bin/activate: requirements.txt
 	if [ ! -f $@ ]; then virtualenv venv; fi
