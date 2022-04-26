@@ -4,7 +4,8 @@ GENERATED_FILES: \
 		output/violent-crime-ytd.xlsx \
 		output/violent-crime-full-year.xlsx \
 		output/index-crime-ytd.xlsx \
-		output/index-crime-full-year.xlsx
+		output/index-crime-full-year.xlsx \
+		output/max_date.txt
 
 .PHONY: all output/index-crime-full-year.csv
 
@@ -64,6 +65,9 @@ output/index-crime-full-year.csv: \
 		python $(word 2, $^) | \
 		python $(word 3, $^) | \
 		python $(wordlist 4, 5, $^) > $@
+
+output/max_date.txt: output/index-crime-full-year.csv
+	python -c "import pandas as pd; df = pd.read_csv('$<', parse_dates=['date']); print(df.date.max().strftime('%Y-%m-%d'))" > $@
 
 venv/bin/activate: requirements.txt
 	if [ ! -f $@ ]; then virtualenv venv; fi
