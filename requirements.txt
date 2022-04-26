@@ -3,3 +3,4 @@ pylint
 geopandas
 pandas
 rtree
+csvkit

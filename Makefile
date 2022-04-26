@@ -10,14 +10,16 @@ GENERATED_FILES: \
 
 all: $(GENERATED_FILES)
 
+output/violent-crime-latest.csv: output/index-crime-latest.csv
+	cat $< | csvgrep -c fbi_code -r "01A|02|03|04A|04B" > $@
+
 output/index-crime-latest.csv: hand/query.sql
 	wget --no-check-certificate --quiet \
-			--method GET \
-			--timeout=0 \
-			--header 'Host: data.cityofchicago.org' \
-			-O /dev/stdout \
-			'https://data.cityofchicago.org/resource/v6vf-nfxy.csv?$$query=$(shell cat $<)' \
-		> $@
+		--method GET \
+		--timeout=0 \
+		--header 'Host: data.cityofchicago.org' \
+		-O $@ \
+		'https://data.cityofchicago.org/resource/ijzp-q8t2.csv?$$query=$(shell cat $<)'
 
 venv/bin/activate: requirements.txt
 	if [ ! -f $@ ]; then virtualenv venv; fi
