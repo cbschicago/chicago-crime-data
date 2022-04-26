@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
     inputs:
 
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
   run-workflow:
     runs-on: ubuntu-latest
