@@ -7,7 +7,8 @@ import pandas as pd
 
 
 def get_col_widths(dataframe):
-    """get an integer representing the width of the column in characters
+    """
+    gets an integer representing the width of the column in characters
 
     Args:
         dataframe (pandas.DataFrame): dataframe to auto-fit to
@@ -33,7 +34,9 @@ def get_col_widths(dataframe):
 
 
 def crosstab(dataframe, index_col):
-    """run pandas.crosstab with a given dataframe and index column, ensuring consistent data selection
+    """
+    runs pandas.crosstab with a given dataframe and index column
+    and ensures consistent data selection
 
     Args:
         dataframe (pandas.DataFrame): dataframe to base crosstab on

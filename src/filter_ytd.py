@@ -4,16 +4,27 @@ import sys
 import pandas as pd
 
 
-def filter_ytd(df):
-    max_date = df.date.max()
-    df = df[
-        (df.date.dt.year == max_date)
+def filter_ytd(dataframe):
+    """filters a dataframe year-to-date to the latest date in the data
+
+    Args:
+        df (pandas.DataFrame): original dataframe
+
+    Returns:
+        pandas.DataFrame: filtered dataframe
+    """
+    max_date = dataframe.date.max()
+    dataframe = dataframe[
+        (dataframe.date.dt.year == max_date)
         | (
-            (df.date.dt.month.isin(range(1, max_date.month)))
-            | ((df.date.dt.month == max_date.month) & (df.date.dt.day <= max_date.day))
+            (dataframe.date.dt.month.isin(range(1, max_date.month)))
+            | (
+                (dataframe.date.dt.month == max_date.month)
+                & (dataframe.date.dt.day <= max_date.day)
+            )
         )
     ]
-    return df
+    return dataframe
 
 
 if __name__ == "__main__":
