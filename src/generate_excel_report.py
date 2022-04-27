@@ -25,7 +25,7 @@ def get_col_widths(dataframe):
     ]
     return idx_max + [
         max(
-            [len(str(s)) for s in dataframe[col].values] + [len(str(x)) for x in col]
+            [len(str(s)) + 5 for s in dataframe[col].values] + [len(str(x)) for x in col]
             if dataframe.columns.nlevels > 1
             else [len(str(col))]
         )
