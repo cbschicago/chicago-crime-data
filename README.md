@@ -56,7 +56,7 @@ This file contains the same data as [violent-crime-ytd.xlsx](#violent-crime-ytd.
 
 ### CTA Crime
 
-CTA Crime datasets contain the same information as the citywide ones, but contain only incidents that occurred on CTA trains, buses, train stations, bus stops and other cta property.
+CTA Crime datasets contain the same information as the citywide ones, but contain only incidents that occurred on CTA trains, train stations, train platforms, buses, and bus stops.
 
 #### [cta-index-crime-ytd.xlsx](output/cta-index-crime-ytd.xlsx)
 

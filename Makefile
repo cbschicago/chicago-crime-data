@@ -81,13 +81,13 @@ output/violent-crime-ytd.csv: \
 	python $^ > $@
 
 output/cta-violent-crime-full-year.csv: output/violent-crime-full-year.csv
-	cat $< | csvgrep -c location_description -r "CTA" > $@
+	cat $< | csvgrep -c location_description -r "CTA" | csvgrep -i -c location_description -r "GARAGE|PROPERTY|TRACKS" > $@
 
 output/violent-crime-full-year.csv: output/index-crime-full-year.csv
 	cat $< | csvgrep -c fbi_code -r "01A|02|03|04A|04B" > $@
 
 output/cta-index-crime-full-year.csv: output/index-crime-full-year.csv
-	cat $< | csvgrep -c location_description -r "CTA" > $@
+	cat $< | csvgrep -c location_description -r "CTA" | csvgrep -i -c location_description -r "GARAGE|PROPERTY|TRACKS" > $@
 
 output/index-crime-ytd.csv: \
 		src/filter_ytd.py \
