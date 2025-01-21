@@ -22,7 +22,7 @@ jobs:
       - name: set up python
         uses: actions/setup-python@v2.0.0
         with:
-          python-version: "3.8"
+          python-version: "3.9"
 
       - name: install python dependencies
         uses: py-actions/py-dependency-install@v2
